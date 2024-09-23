@@ -11,8 +11,8 @@
 #### <a id="top"></a>
 
 
-
 * [EAN generator](#ean)
+* [DTO pattern](#dto)
 * [H2 properties](#properties)
 * [@Scheduled](#scheduled)
 
@@ -45,6 +45,20 @@ public class EanGenerator {
     }
 }
 ```
+
+* [Top](#top)
+
+## <a id="dto"></a>Data Transfer Object
+
+* [https://www.baeldung.com/java-dto-pattern](https://www.baeldung.com/java-dto-pattern)
+
+[![Alt text](https://www.baeldung.com/wp-content/uploads/2021/08/layers-4.svg)](## "Where did the image go..")
+
+
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
 
 * [Top](#top)
 
