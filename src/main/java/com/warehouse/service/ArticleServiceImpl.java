@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArticleServiceImpl implements ArticleService{
@@ -42,5 +43,17 @@ public class ArticleServiceImpl implements ArticleService{
         article = articleRepository.save( article);
 
         return articleMapper.toArticleDTO( article);
+    }
+
+    @Override
+    public Optional<ArticleDTO> findByEan(String ean) {
+        Optional<Article> article = articleRepository.findByEan( ean);
+
+        if( article.isPresent()){
+            ArticleDTO articleDTO = articleMapper.toArticleDTO(article.get());
+            return Optional.of( articleDTO);
+        }
+
+        return Optional.empty();
     }
 }

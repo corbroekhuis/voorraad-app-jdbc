@@ -104,3 +104,12 @@ public class RestockScheduler {
 * @JsonProperty(access = JsonProperty.Access.READ_ONLY)
 
 
+{
+"name": "Fat Bike",
+"description": "Gevaarlijk vervoermiddel",
+"articleNumber": "55555",
+"stock": 10,
+"minimumStock": 3
+}
+
+
