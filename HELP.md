@@ -3,19 +3,15 @@
 ## Voorraad Applicatie
 * [https://github.com/corbroekhuis/voorraad-app.git](https://github.com/corbroekhuis/voorraad-app.git)
 
+<br/><br/>
+<br/><br/>
 
-<br/><br/>
-<br/><br/>
-<br/><br/>
-<br/><br/>
 #### <a id="top"></a>
-
 
 * [EAN generator](#ean)
 * [DTO pattern](#dto)
 * [H2 properties](#properties)
 * [@Scheduled](#scheduled)
-
 
 <br/><br/>
 <br/><br/>
