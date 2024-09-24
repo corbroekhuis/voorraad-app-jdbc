@@ -34,4 +34,13 @@ public class ArticleServiceImpl implements ArticleService{
 
         return articleDTOS;
     }
+
+    @Override
+    public ArticleDTO save(ArticleDTO articleDTO) {
+
+        Article article = articleMapper.toArticle( articleDTO);
+        article = articleRepository.save( article);
+
+        return articleMapper.toArticleDTO( article);
+    }
 }
