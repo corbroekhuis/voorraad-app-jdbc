@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface ArticleRepository extends CrudRepository<Article,Long> {
     Optional<Article> findByEan(String ean);
+    
 }

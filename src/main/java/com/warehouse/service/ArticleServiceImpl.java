@@ -24,7 +24,7 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public Iterable<ArticleDTO> findAll() {
+    public Iterable<ArticleDTO> findAllDTOS() {
 
         List<ArticleDTO> articleDTOS = new ArrayList<>();
         Iterable<Article> articles = articleRepository.findAll();
@@ -37,7 +37,7 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public ArticleDTO save(ArticleDTO articleDTO) {
+    public ArticleDTO saveDTO(ArticleDTO articleDTO) {
 
         Article article = articleMapper.toArticle( articleDTO);
         article = articleRepository.save( article);
@@ -46,7 +46,7 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public Optional<ArticleDTO> findByEan(String ean) {
+    public Optional<ArticleDTO> findDTOByEan(String ean) {
         Optional<Article> article = articleRepository.findByEan( ean);
 
         if( article.isPresent()){
@@ -55,5 +55,15 @@ public class ArticleServiceImpl implements ArticleService{
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public Iterable<Article> findAll() {
+        return articleRepository.findAll();
+    }
+
+    @Override
+    public Article save(Article article) {
+        return articleRepository.save( article);
     }
 }

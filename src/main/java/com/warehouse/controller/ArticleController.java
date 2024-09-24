@@ -1,6 +1,5 @@
 package com.warehouse.controller;
 
-import com.warehouse.model.Article;
 import com.warehouse.model.dto.ArticleDTO;
 import com.warehouse.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class ArticleController {
     @GetMapping( value = "/article", produces = "application/json")
     public ResponseEntity<Iterable<ArticleDTO>> findAll(){
 
-        Iterable<ArticleDTO> articleDTOS = articleService.findAll();
+        Iterable<ArticleDTO> articleDTOS = articleService.findAllDTOS();
 
         return ResponseEntity.ok(articleDTOS);
     }
@@ -37,14 +36,14 @@ public class ArticleController {
     @PostMapping( value = "/article", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ArticleDTO> createArticle(@RequestBody ArticleDTO articleDTO){
 
-        ArticleDTO saved = articleService.save( articleDTO);
+        ArticleDTO saved = articleService.saveDTO( articleDTO);
 
         return ResponseEntity.ok(saved);
     }
     // ...findbyean?ean=82389348935
     @GetMapping( value = "/findbyean", produces = "application/json")
     public ResponseEntity<ArticleDTO> findByEan(@RequestParam String ean){
-        Optional<ArticleDTO> articleDTO = articleService.findByEan( ean);
+        Optional<ArticleDTO> articleDTO = articleService.findDTOByEan( ean);
 
         if(articleDTO.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);

@@ -1,13 +1,18 @@
 package com.warehouse.service;
 
+import com.warehouse.model.Article;
 import com.warehouse.model.dto.ArticleDTO;
 
 import java.util.Optional;
 
 public interface ArticleService {
-    Iterable<ArticleDTO> findAll();
+    Iterable<ArticleDTO> findAllDTOS();
 
-    ArticleDTO save(ArticleDTO articleDTO);
+    ArticleDTO saveDTO(ArticleDTO articleDTO);
 
-    Optional<ArticleDTO> findByEan(String ean);
+    Optional<ArticleDTO> findDTOByEan(String ean);
+
+    Iterable<Article> findAll();
+
+    Article save(Article article);
 }
