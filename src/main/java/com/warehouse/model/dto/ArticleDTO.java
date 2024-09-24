@@ -1,5 +1,7 @@
 package com.warehouse.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class ArticleDTO {
@@ -7,10 +9,12 @@ public class ArticleDTO {
     Long id;
     String name;
     String description;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     String ean;
     String articleNumber;
     int stock;
     int minimumStock;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     List<String> reviews;
 
     public Long getId() {

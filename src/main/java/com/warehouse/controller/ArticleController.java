@@ -23,7 +23,9 @@ public class ArticleController {
     @GetMapping( value = "/article", produces = "application/json")
     public ResponseEntity<Iterable<ArticleDTO>> findAll(){
 
+        Iterable<ArticleDTO> articleDTOS = articleService.findAll();
 
+        return ResponseEntity.ok(articleDTOS);
     }
 
 

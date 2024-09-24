@@ -101,4 +101,6 @@ public class RestockScheduler {
 <br/><br/>
 
 * [Top](#top)
+* @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+
 
