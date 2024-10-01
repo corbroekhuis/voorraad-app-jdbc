@@ -6,16 +6,16 @@ import java.util.List;
 
 public class ArticleDTO {
 
-    Long id;
-    String name;
-    String description;
+    private Long id;
+    private String name;
+    private String description;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    String ean;
-    String articleNumber;
-    int stock;
-    int minimumStock;
+    private String ean;
+    private String articleNumber;
+    private int stock;
+    private int minimumStock;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    List<String> reviews;
+    private List<String> reviews;
 
     public Long getId() {
         return id;
