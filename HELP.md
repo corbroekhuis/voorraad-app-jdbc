@@ -183,13 +183,13 @@ Eventueel toevoegen aan class ```Article```
     public Object[] getValueArray(){
 
         Object[] valueArray = {
-                id,
                 name,
                 description,
                 articleNumber,
                 ean,
                 stock,
-                minimumStock
+                minimumStock,
+                id
 		};
         
         return valueArray;
