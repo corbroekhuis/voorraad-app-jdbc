@@ -66,4 +66,10 @@ public class ArticleServiceImpl implements ArticleService{
     public Article save(Article article) {
         return articleRepository.save( article);
     }
+
+    @Override
+    public void deleteByEan(String ean){
+
+        articleRepository.deleteByEan( ean);
+    }
 }

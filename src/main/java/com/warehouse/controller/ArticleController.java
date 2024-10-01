@@ -5,6 +5,7 @@ import com.warehouse.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,4 +52,22 @@ public class ArticleController {
 
         return ResponseEntity.ok(articleDTO.get());
     }
+
+    @GetMapping( value = "/updatestock")
+    public ResponseEntity<String> updateStock(@RequestParam String ean, @RequestParam int amount){
+
+
+
+        return ResponseEntity.ok("updated");
+    }
+
+    @DeleteMapping( value="/article")
+    public ResponseEntity<String> delete( @RequestParam String ean){
+
+        articleService.deleteByEan( ean);
+        return ResponseEntity.ok("deleted");
+
+    }
+
+
 }

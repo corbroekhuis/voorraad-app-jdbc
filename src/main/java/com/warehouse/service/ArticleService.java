@@ -12,4 +12,5 @@ public interface ArticleService {
     Optional<ArticleDTO> findDTOByEan(String ean);
     Iterable<Article> findAll();
     Article save(Article article);
+    void deleteByEan(String ean);
 }
