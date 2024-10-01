@@ -15,6 +15,4 @@ public interface ArticleService {
     Iterable<Article> findAll();
 
     Article save(Article article);
-
-    Optional<Article> adjustStock(String ean, int amount) throws Exception;
 }

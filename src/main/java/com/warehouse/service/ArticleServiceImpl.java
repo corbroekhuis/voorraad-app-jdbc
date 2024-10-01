@@ -66,19 +66,4 @@ public class ArticleServiceImpl implements ArticleService{
     public Article save(Article article) {
         return articleRepository.save( article);
     }
-
-    @Override
-    public Optional<Article> adjustStock(String ean, int amount) throws Exception {
-        Optional<Article> article = articleRepository.findByEan( ean);
-        if(article.isEmpty()){
-            return Optional.empty();
-        }
-
-        if( amount > article.get().getStock()){
-            throw new Exception("Amount greater than stock");
-        }
-
-        article.get().setStock();
-        return null;
-    }
 }
