@@ -53,10 +53,14 @@ public class ArticleController {
         return ResponseEntity.ok(articleDTO.get());
     }
 
-    @GetMapping( value = "/updatestock")
+    @PostMapping( value = "/updatestock")
     public ResponseEntity<String> updateStock(@RequestParam String ean, @RequestParam int amount){
 
-
+        try {
+            articleService.updateStock( ean, amount);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
 
         return ResponseEntity.ok("updated");
     }
@@ -66,8 +70,5 @@ public class ArticleController {
 
         articleService.deleteByEan( ean);
         return ResponseEntity.ok("deleted");
-
     }
-
-
 }

@@ -72,4 +72,28 @@ public class ArticleServiceImpl implements ArticleService{
 
         articleRepository.deleteByEan( ean);
     }
+
+    @Override
+    public void updateStock(String ean, int amount) throws Exception {
+        Optional<Article> optional = articleRepository.findByEan( ean);
+
+        if(optional.isEmpty()){
+            throw new Exception( "Artikel niet gevonden");
+        }
+
+        Article article = optional.get();
+
+        if( (article.getStock() + amount) < 0){
+            throw new Exception( "Voorraad wordt negatief");
+        }
+
+        updateStock( article, amount);
+    }
+
+    @Override
+    public void updateStock(Article article, int amount) {
+
+        article.setStock( article.getStock() + amount);
+        articleRepository.save( article);
+    }
 }

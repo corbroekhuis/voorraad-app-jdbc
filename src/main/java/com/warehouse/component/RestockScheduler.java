@@ -29,8 +29,9 @@ public class RestockScheduler {
 
         for( Article article: articles){
             if( article.getStock() < article.getMinimumStock()){
-                article.setStock( article.getStock() + 20);
-                articleService.save( article);
+
+                articleService.updateStock( article, 20);
+
                 System.out.println("Voorraad opgehoogd voor artikel: " + article.getEan());
             }
         }
