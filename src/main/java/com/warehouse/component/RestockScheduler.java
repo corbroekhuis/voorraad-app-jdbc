@@ -18,7 +18,7 @@ public class RestockScheduler {
         this.articleService = articleService;
     }
 
-    @Scheduled(fixedDelay = 10_000)
+    @Scheduled(fixedDelayString = "${fixed-delay.in.milliseconds}")
     //@Scheduled(fixedRate = 1000)
     //@Scheduled(cron = "0 15 10 15 * ?")
     public void RestockTask() {
