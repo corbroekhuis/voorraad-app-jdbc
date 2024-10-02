@@ -188,8 +188,8 @@ Eventueel toevoegen aan class ```Article```
         parameters.put("artikel_nummer", articleNumber);
         parameters.put("voorraad", stock);
         parameters.put("minimum_voorraad", minimumStock);
+        
         return parameters;
-
     }
 ```
 
