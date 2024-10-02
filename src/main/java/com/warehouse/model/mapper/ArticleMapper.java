@@ -1,4 +1,4 @@
-package com.warehouse.mapper;
+package com.warehouse.model.mapper;
 
 import com.warehouse.component.EanGenerator;
 import com.warehouse.model.Article;

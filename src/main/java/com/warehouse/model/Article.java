@@ -1,29 +1,13 @@
 package com.warehouse.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity
-@Table(name="artikelen")
 public class Article {
 
-    @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(name = "naam")
     String name;
-    @Column(name = "omschrijving")
     String description;
     String ean;
-    @Column(name = "artikel_nummer")
     String articleNumber;
-    @Column(name = "voorraad")
     int stock;
-    @Column(name = "minimum_voorraad")
     int minimumStock;
 
     public Long getId() {

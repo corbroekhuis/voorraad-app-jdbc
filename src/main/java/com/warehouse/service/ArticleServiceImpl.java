@@ -1,9 +1,10 @@
 package com.warehouse.service;
 
-import com.warehouse.mapper.ArticleMapper;
+import com.warehouse.dao.article.ArticleDAO;
+import com.warehouse.model.mapper.ArticleMapper;
 import com.warehouse.model.Article;
 import com.warehouse.model.dto.ArticleDTO;
-import com.warehouse.repository.ArticleRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +15,12 @@ import java.util.Optional;
 @Service
 public class ArticleServiceImpl implements ArticleService{
 
-    ArticleRepository articleRepository;
+    ArticleDAO articleDAO;
     ArticleMapper articleMapper;
 
     @Autowired
-    public ArticleServiceImpl(ArticleRepository articleRepository, ArticleMapper articleMapper) {
-        this.articleRepository = articleRepository;
+    public ArticleServiceImpl(ArticleDAO articleDAO, ArticleMapper articleMapper) {
+        this.articleDAO = articleDAO;
         this.articleMapper = articleMapper;
     }
 
@@ -27,7 +28,7 @@ public class ArticleServiceImpl implements ArticleService{
     public Iterable<ArticleDTO> findAllDTOS() {
 
         List<ArticleDTO> articleDTOS = new ArrayList<>();
-        Iterable<Article> articles = articleRepository.findAll();
+        Iterable<Article> articles = articleDAO.findAll();
 
         for( Article article: articles){
             articleDTOS.add( articleMapper.toArticleDTO( article));
@@ -38,16 +39,22 @@ public class ArticleServiceImpl implements ArticleService{
 
     @Override
     public ArticleDTO saveDTO(ArticleDTO articleDTO) {
-
         Article article = articleMapper.toArticle( articleDTO);
-        article = articleRepository.save( article);
+
+        if(articleDTO.getId() == null){
+            // id is in article
+            article = create( article);
+        }else{
+            int updated = articleDAO.update( article);
+            System.out.println( "Updated: " + updated + " rows");
+        }
 
         return articleMapper.toArticleDTO( article);
     }
 
     @Override
     public Optional<ArticleDTO> findDTOByEan(String ean) {
-        Optional<Article> article = articleRepository.findByEan( ean);
+        Optional<Article> article = articleDAO.findByEan( ean);
 
         if( article.isPresent()){
             ArticleDTO articleDTO = articleMapper.toArticleDTO(article.get());
@@ -59,23 +66,27 @@ public class ArticleServiceImpl implements ArticleService{
 
     @Override
     public Iterable<Article> findAll() {
-        return articleRepository.findAll();
+        return articleDAO.findAll();
     }
 
     @Override
-    public Article save(Article article) {
-        return articleRepository.save( article);
+    public Article create(Article article) {
+        Number id = articleDAO.create( article);
+        System.out.println( "Created Article with id: " + id.toString());
+        article.setId( id.longValue());
+        return article;
     }
 
     @Override
     public void deleteByEan(String ean){
 
-        articleRepository.deleteByEan( ean);
+        int deleted = articleDAO.deleteByEan( ean);
+        System.out.println("Deleted " + deleted + " rows");
     }
 
     @Override
     public void updateStock(String ean, int amount) throws Exception {
-        Optional<Article> optional = articleRepository.findByEan( ean);
+        Optional<Article> optional = articleDAO.findByEan( ean);
 
         if(optional.isEmpty()){
             throw new Exception( "Artikel niet gevonden");
@@ -94,6 +105,6 @@ public class ArticleServiceImpl implements ArticleService{
     public void updateStock(Article article, int amount) {
 
         article.setStock( article.getStock() + amount);
-        articleRepository.save( article);
+        articleDAO.create( article);
     }
 }
