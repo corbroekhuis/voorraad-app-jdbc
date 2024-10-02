@@ -182,9 +182,6 @@ Eventueel toevoegen aan class ```Article```
     public Map<String, Object> getParameterMap(){
 
         Map<String,Object> parameters = new HashMap<String,Object>();
-        if(id != null && id > 0) {
-            parameters.put("id", id);
-        }
         parameters.put("naam", name);
         parameters.put("omschrijving", description);
         parameters.put("ean", ean);
