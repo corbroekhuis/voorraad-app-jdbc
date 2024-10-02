@@ -3,16 +3,33 @@
 ## Voorraad Applicatie
 * [https://github.com/corbroekhuis/voorraad-app.git](https://github.com/corbroekhuis/voorraad-app.git)
 
+**_NOTE:_**  Selecteer branch voorraad-app-jdbc
+
+<br/><br/>
+<br/><br/>
+
+
+### Gebruikte JDBCTemplate methodes staan hier beschreven
+* [https://www.tutorialspoint.com/springjdbc/index.htm](https://www.tutorialspoint.com/springjdbc/index.htm)
+  <br/><br/>
+  - Read Query: [https://www.tutorialspoint.com/springjdbc/springjdbc_read_query.htm](https://www.tutorialspoint.com/springjdbc/springjdbc_read_query.htm)
+  - Update Query: [https://www.tutorialspoint.com/springjdbc/springjdbc_update_query.htm](https://www.tutorialspoint.com/springjdbc/springjdbc_update_query.htm)
+  - Delete Query: [https://www.tutorialspoint.com/springjdbc/springjdbc_delete_query.htm](https://www.tutorialspoint.com/springjdbc/springjdbc_delete_query.htm)
+  - SimpleJdbcInsert: [https://www.tutorialspoint.com/springjdbc/springjdbc_simplejdbcinsert.htm](https://www.tutorialspoint.com/springjdbc/springjdbc_simplejdbcinsert.htm)
+
+<br/><br/>
+<br/><br/>
+<br/><br/>
+<br/><br/>
 <br/><br/>
 <br/><br/>
 
 #### <a id="top"></a>
-
+### Index:
 * [Create tabel Artikelen](#artikelen)
 * [Swagger annotations](#swagger)
 * [Properties](#properties)
 * [Create tabel Reviews](#reviews)
-
 
 <br/><br/>
 <br/><br/>
