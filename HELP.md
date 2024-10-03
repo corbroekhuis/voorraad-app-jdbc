@@ -3,7 +3,6 @@
 ## Voorraad Applicatie
 * [https://github.com/corbroekhuis/voorraad-app-jdbc.git](https://github.com/corbroekhuis/voorraad-app-jdbc.git)
 
-**_NOTE:_**  Selecteer branch voorraad-app-jdbc
 
 <br/><br/>
 <br/><br/>
