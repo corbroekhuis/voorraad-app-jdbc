@@ -69,8 +69,7 @@ public class ArticleServiceImpl implements ArticleService{
         return articleDAO.findAll();
     }
 
-    @Override
-    public Article create(Article article) {
+    private Article create(Article article) {
         Number id = articleDAO.create( article);
         System.out.println( "Created Article with id: " + id.toString());
         article.setId( id.longValue());

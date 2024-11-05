@@ -97,7 +97,7 @@ public class ArticleJDBCTemplate implements ArticleDAO {
 
     @Override
     public int deleteByEan(String ean) {
-        String deleteQuery = "DELETE FROM Artikelen WHERE ean = ?";
+        String deleteQuery = "DELETE FROM artikelen WHERE ean = ?";
         return jdbcTemplate.update(deleteQuery, ean);
     }
 }

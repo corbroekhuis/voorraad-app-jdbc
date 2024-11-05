@@ -11,7 +11,6 @@ public interface ArticleService {
     ArticleDTO saveDTO(ArticleDTO articleDTO);
     Optional<ArticleDTO> findDTOByEan(String ean);
     Iterable<Article> findAll();
-    Article create(Article article);
     void deleteByEan(String ean);
     void updateStock(String ean, int amount) throws Exception;
     void updateStock(Article article, int amount);
