@@ -3,7 +3,7 @@
 ## Voorraad Applicatie
 * [https://github.com/corbroekhuis/voorraad-app-jdbc.git](https://github.com/corbroekhuis/voorraad-app-jdbc.git)
 
-ssssssssssssssssssssssssssssssss
+
 <br/><br/>
 <br/><br/>
 
