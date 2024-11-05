@@ -25,7 +25,11 @@ public class ArticleMapper {
         article.setId( articleDTO.getId() );
         article.setName( articleDTO.getName() );
         article.setDescription( articleDTO.getDescription() );
-        article.setEan( eanGenerator.newEan( articleDTO.getArticleNumber()));
+        try {
+            article.setEan( eanGenerator.newEan( articleDTO.getArticleNumber()));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         article.setArticleNumber( articleDTO.getArticleNumber() );
         article.setStock( articleDTO.getStock());
         article.setMinimumStock( articleDTO.getMinimumStock());

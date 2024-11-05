@@ -140,6 +140,6 @@ public class ArticleServiceImpl implements ArticleService{
     public void updateStock(Article article, int amount) {
 
         article.setStock( article.getStock() + amount);
-        articleDAO.create( article);
+        articleDAO.update( article);
     }
 }
