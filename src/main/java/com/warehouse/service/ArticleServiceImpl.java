@@ -38,7 +38,14 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public ArticleDTO saveDTO(ArticleDTO articleDTO) {
+    public ArticleDTO saveDTO(ArticleDTO articleDTO) throws Exception {
+
+        Optional<Article> found = articleDAO.findByArticleNumber( articleDTO.getArticleNumber());
+
+        if(found.isPresent()){
+            throw new Exception("Artikel met artikelnummer: " + articleDTO.getArticleNumber() + " bestaat al");
+        }
+
         Article article = articleMapper.toArticle( articleDTO);
 
         if(articleDTO.getId() == null){

@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ArticleService {
 
     Iterable<ArticleDTO> findAllDTOS();
-    ArticleDTO saveDTO(ArticleDTO articleDTO);
+    ArticleDTO saveDTO(ArticleDTO articleDTO) throws Exception;
     Optional<ArticleDTO> findDTOByEan(String ean);
     Iterable<Article> findAll();
     void deleteByEan(String ean);

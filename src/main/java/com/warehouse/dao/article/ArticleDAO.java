@@ -12,4 +12,5 @@ public interface ArticleDAO {
     int update(Article article);
     Optional<Article> findByEan(String ean);
     int deleteByEan(String ean);
+    Optional<Article> findByArticleNumber(String articleNumber);
 }

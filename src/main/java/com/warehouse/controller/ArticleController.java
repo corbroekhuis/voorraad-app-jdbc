@@ -26,7 +26,7 @@ import java.util.Optional;
 @RequestMapping("api")
 public class ArticleController {
 
-    ArticleService articleService;
+    private ArticleService articleService;
 
     @Autowired
     public ArticleController(ArticleService articleService) {
@@ -124,7 +124,13 @@ public class ArticleController {
     })
     public ResponseEntity<ArticleDTO> saveArticle(@RequestBody ArticleDTO articleDTO){
 
-        ArticleDTO saved = articleService.saveDTO( articleDTO);
+        ArticleDTO saved = null;
+
+        try {
+            saved = articleService.saveDTO( articleDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
 
         return ResponseEntity.ok(saved);
     }

@@ -26,10 +26,9 @@ public class ArticleJDBCTemplate implements ArticleDAO {
 
     @Override
     public Iterable<Article> findAll() {
-        String selectQuery = "SELECT * FROM Artikelen";
+        String selectQuery = "SELECT * FROM artikelen";
         return jdbcTemplate.query(selectQuery, new ArticleRowMapper());
     }
-
 
     @Override
     public Optional<Article> findById(long id) {
@@ -99,5 +98,13 @@ public class ArticleJDBCTemplate implements ArticleDAO {
     public int deleteByEan(String ean) {
         String deleteQuery = "DELETE FROM artikelen WHERE ean = ?";
         return jdbcTemplate.update(deleteQuery, ean);
+    }
+
+    @Override
+    public Optional<Article> findByArticleNumber(String articleNumber) {
+        String sql = "SELECT * FROM artikelen WHERE artikel_nummer=?";
+
+        Article article = jdbcTemplate.queryForObject( sql, new ArticleRowMapper(), articleNumber);
+        return Optional.ofNullable( article);
     }
 }
