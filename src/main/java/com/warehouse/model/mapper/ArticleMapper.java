@@ -42,13 +42,12 @@ public class ArticleMapper {
         articleDTO.setArticleNumber(  article.getArticleNumber() );
         articleDTO.setStock(article.getStock());
         articleDTO.setMinimumStock(article.getMinimumStock());
-        articleDTO.setReviews( getReviews());
         return articleDTO;
     }
 
-    private List<String> getReviews() {
-
-        String[] reviews = {"Ontzettend slecht product","Niet enthousiast","Gaat wel","Viel mee","Super product!!!"};
-        return Arrays.asList( reviews);
-    }
+//    private List<String> getReviews() {
+//
+//        String[] reviews = {"Ontzettend slecht product","Niet enthousiast","Gaat wel","Viel mee","Super product!!!"};
+//        return Arrays.asList( reviews);
+//    }
 }

@@ -1,6 +1,8 @@
 package com.warehouse.service;
 
 import com.warehouse.dao.article.ArticleDAO;
+import com.warehouse.dao.review.ReviewDAO;
+import com.warehouse.model.Review;
 import com.warehouse.model.mapper.ArticleMapper;
 import com.warehouse.model.Article;
 import com.warehouse.model.dto.ArticleDTO;
@@ -16,11 +18,15 @@ import java.util.Optional;
 public class ArticleServiceImpl implements ArticleService{
 
     ArticleDAO articleDAO;
+    ReviewDAO reviewDAO;
     ArticleMapper articleMapper;
 
     @Autowired
-    public ArticleServiceImpl(ArticleDAO articleDAO, ArticleMapper articleMapper) {
+    public ArticleServiceImpl(ArticleDAO articleDAO,
+                              ReviewDAO reviewDAO,
+                              ArticleMapper articleMapper) {
         this.articleDAO = articleDAO;
+        this.reviewDAO = reviewDAO;
         this.articleMapper = articleMapper;
     }
 
@@ -31,10 +37,33 @@ public class ArticleServiceImpl implements ArticleService{
         Iterable<Article> articles = articleDAO.findAll();
 
         for( Article article: articles){
-            articleDTOS.add( articleMapper.toArticleDTO( article));
+
+            ArticleDTO articleDTO = articleMapper.toArticleDTO( article);
+            List<Review> reviews = reviewDAO.getReviews( articleDTO.getId());
+            List<String> formattedReviews = formatReviews( reviews);
+            articleDTO.setReviews( formattedReviews);
+            articleDTOS.add( articleDTO );
         }
 
         return articleDTOS;
+    }
+
+    private List<String> formatReviews(List<Review> reviews) {
+        List<String> formattedReviews = new ArrayList<>();
+
+        for( Review review: reviews){
+            formattedReviews.add( getStars( review) + ": " + review.getText() );
+        }
+
+        return formattedReviews;
+    }
+
+    private String getStars(Review review) {
+        String stars = "";
+        for( int i=0; i < review.getStars(); i++){
+            stars = stars + "*";
+        }
+        return stars;
     }
 
     @Override
