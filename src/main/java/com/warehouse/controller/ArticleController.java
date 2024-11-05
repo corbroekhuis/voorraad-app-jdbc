@@ -44,7 +44,7 @@ public class ArticleController {
 
     // http:/<port>/api/article
     @PostMapping( value = "/article", consumes = "application/json", produces = "application/json")
-    @Operation(summary = "Insert/Update voor een artikel",
+    @Operation(summary = "Create/Update voor een artikel",
             description= """
                 <ul>
                     <li> Voeg een nieuw artikel toe of update een bestaand artikel</li>
@@ -56,60 +56,73 @@ public class ArticleController {
                 """)
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Bericht toegevoegd",
-                    content = { @Content(mediaType = "application/json",
+                    content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = Article.class),
                             examples = {
                                     @ExampleObject(
-                                            name = "ex0",
-                                            summary="Voeg een artikel toe",
+                                            name = "create",
+                                            summary = "Voeg een artikel toe",
                                             description = """
-                                                Deze voorbeeld JSON, update het artikel met id = 7<br>
-                                                Verwijder regel '"id": 7', om een nieuw artikel toe te voegen<br>
-                                                Het artikelnummer moet nog niet bestaan in de tabel<br>
-                                                """,
+                                                    Deze voorbeeld JSON, een nieuw artikel toe<br>
+                                                    met artikelnummer '50011'<br>
+                                                    het EAN nummer wordt gegenereerd<br>
+                                                    Het artikelnummer mag nog niet bestaan in de tabel<br>
+                                                    """,
                                             value = """
-                                                  {
-                                                    "id": 7,
-                                                    "name": "Fat Bike B",
-                                                    "description": "Black Fat Bike",
-                                                    "articleNumber": "50011",
-                                                    "stock": 20,
-                                                    "minimumStock": 10
-                                                  }
-                                                """
+                                                      {
+                                                        "name": "Fat Bike B",
+                                                        "description": "Black Fat Bike",
+                                                        "articleNumber": "50011",
+                                                        "stock": 20,
+                                                        "minimumStock": 10
+                                                      }
+                                                    """
                                     ),
                                     @ExampleObject(
-                                            name = "ex1",
-                                            summary="XXXXXXVoeg een artikel toe",
-                                            description = "ex1 Voeg een artikel toe ",
+                                            name = "update",
+                                            summary = "Update een bestaand artikel",
+                                            description = """
+                                                    Deze voorbeeld JSON, update het artikel met id = 7<br>
+                                                    """,
                                             value = """
-                                                  {
-                                                    "name": "Fat Bike B",
-                                                    "description": "Black Fat Bike",
-                                                    "articleNumber": "50011",
-                                                    "stock": 20,
-                                                    "minimumStock": 10
-                                                  }
-                                                """
-                                    ),
-                                    @ExampleObject(
-                                            name = "ex2",
-                                            summary="Update een bestaand artikel",
-                                            description = "ex2 Update een bestaand artikel ",
-                                            value = """
-                                                  {
-                                                    "id": 7,
-                                                    "name": "Fat Bike B",
-                                                    "description": "Black Fat Bike",
-                                                    "articleNumber": "50011",
-                                                    "stock": 20,
-                                                    "minimumStock": 10
-                                                  }
-                                                """
+                                                      {
+                                                        "id": 7,
+                                                        "name": "Fat Bike B",
+                                                        "description": "Black Fat Bike updated",
+                                                        "articleNumber": "50011",
+                                                        "stock": 50,
+                                                        "minimumStock": 10
+                                                      }
+                                                    """
                                     )
                             }),
-                    }) })
-    public ResponseEntity<ArticleDTO> createArticle(@RequestBody ArticleDTO articleDTO){
+                    }),
+            @ApiResponse(responseCode = "400", description = "Bad Request, artikel met zelfde artikelnummer bestaat al",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = String.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "example-400",
+                                            summary = "Artikelnummer bestaat al",
+                                            description = """
+                                                    Deze voorbeeld JSON, voegt een artikel toe<br>
+                                                    echter, artikelnummer 50011 bestaat al<br>
+                                                    er wordt geen waarde teruggegeven<br>
+                                                    """,
+                                            value = """
+                                                      {
+                                                        "name": "Fat Bike B",
+                                                        "description": "Black Fat Bike",
+                                                        "articleNumber": "50011",
+                                                        "stock": 20,
+                                                        "minimumStock": 10
+                                                      }
+                                                    """
+                                    )
+                            }),
+                    })
+    })
+    public ResponseEntity<ArticleDTO> saveArticle(@RequestBody ArticleDTO articleDTO){
 
         ArticleDTO saved = articleService.saveDTO( articleDTO);
 
@@ -123,9 +136,9 @@ public class ArticleController {
 
         if(articleDTO.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }else{
+            return ResponseEntity.ok(articleDTO.get());
         }
-
-        return ResponseEntity.ok(articleDTO.get());
     }
 
     // http:/<port>/api/article?ean=123456789&amount=10

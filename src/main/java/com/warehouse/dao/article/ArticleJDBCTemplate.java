@@ -1,6 +1,6 @@
 package com.warehouse.dao.article;
 
-import com.warehouse.dao.article.mapper.ArticleMapper;
+import com.warehouse.dao.article.mapper.ArticleRowMapper;
 import com.warehouse.model.Article;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -27,7 +27,7 @@ public class ArticleJDBCTemplate implements ArticleDAO {
     @Override
     public Iterable<Article> findAll() {
         String selectQuery = "SELECT * FROM Artikelen";
-        return jdbcTemplate.query(selectQuery, new ArticleMapper());
+        return jdbcTemplate.query(selectQuery, new ArticleRowMapper());
     }
 
 
@@ -36,7 +36,7 @@ public class ArticleJDBCTemplate implements ArticleDAO {
 
         String sql = "SELECT * FROM artikelen WHERE id=?";
 
-        Article article = jdbcTemplate.queryForObject( sql, new ArticleMapper(), id);
+        Article article = jdbcTemplate.queryForObject( sql, new ArticleRowMapper(), id);
         return Optional.ofNullable( article);
     }
 
@@ -91,7 +91,7 @@ public class ArticleJDBCTemplate implements ArticleDAO {
     public Optional<Article> findByEan(String ean) {
         String sql = "SELECT * FROM artikelen WHERE ean=?";
 
-        Article article = jdbcTemplate.queryForObject( sql, new ArticleMapper(), ean);
+        Article article = jdbcTemplate.queryForObject( sql, new ArticleRowMapper(), ean);
         return Optional.ofNullable( article);
     }
 

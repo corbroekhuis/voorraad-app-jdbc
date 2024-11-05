@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ArticleMapper implements RowMapper<Article> {
+public class ArticleRowMapper implements RowMapper<Article> {
 
     public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
         Article article = new Article();
