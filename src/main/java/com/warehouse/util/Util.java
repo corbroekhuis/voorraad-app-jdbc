@@ -1,4 +1,4 @@
-package com.warehouse.model;
+package com.warehouse.util;
 
 public class Util {
 

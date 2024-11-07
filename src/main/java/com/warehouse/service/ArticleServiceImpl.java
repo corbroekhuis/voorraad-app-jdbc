@@ -3,7 +3,7 @@ package com.warehouse.service;
 import com.warehouse.dao.article.ArticleDAO;
 import com.warehouse.dao.review.ReviewDAO;
 import com.warehouse.model.Review;
-import com.warehouse.model.Util;
+import com.warehouse.util.Util;
 import com.warehouse.model.mapper.ArticleMapper;
 import com.warehouse.model.Article;
 import com.warehouse.model.dto.ArticleDTO;

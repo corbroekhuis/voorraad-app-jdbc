@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.uwv</groupId>
-	<artifactId>spring-boot</artifactId>
+	<artifactId>voorraad-app-jdbc</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-boot</name>
+	<name>voorraad-app-jdbc</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

@@ -26,9 +26,9 @@
 #### <a id="top"></a>
 ### Index:
 * [Create tabel Artikelen](#artikelen)
+* [Create tabel Reviews](#reviews)
 * [Swagger annotations](#swagger)
 * [Properties](#properties)
-* [Create tabel Reviews](#reviews)
 
 <br/><br/>
 <br/><br/>
