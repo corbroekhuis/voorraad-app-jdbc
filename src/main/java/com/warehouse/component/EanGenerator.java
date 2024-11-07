@@ -26,10 +26,15 @@ public class EanGenerator {
 
         sb.append("87");
         sb.append(aansluitNummer);
-        // padleft
+                   // padleft with spaces                        replace spaces by zeroes
         sb.append( String.format("%1$" + 5 + "s", articleNumber).replace(' ', '0'));
         sb.append("0");
 
         return sb.toString();
+    }
+
+    public static void main(String[] args) throws IOException {
+        String ean = new EanGenerator("11111").newEan("9");
+        System.out.println(ean);
     }
 }

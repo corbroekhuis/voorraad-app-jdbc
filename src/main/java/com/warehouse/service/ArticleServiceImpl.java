@@ -3,6 +3,7 @@ package com.warehouse.service;
 import com.warehouse.dao.article.ArticleDAO;
 import com.warehouse.dao.review.ReviewDAO;
 import com.warehouse.model.Review;
+import com.warehouse.model.Util;
 import com.warehouse.model.mapper.ArticleMapper;
 import com.warehouse.model.Article;
 import com.warehouse.model.dto.ArticleDTO;
@@ -39,7 +40,7 @@ public class ArticleServiceImpl implements ArticleService{
         for( Article article: articles){
 
             ArticleDTO articleDTO = articleMapper.toArticleDTO( article);
-            List<Review> reviews = reviewDAO.getReviews( articleDTO.getId());
+            List<Review> reviews = reviewDAO.findByArticleId( articleDTO.getId());
             List<String> formattedReviews = formatReviews( reviews);
             articleDTO.setReviews( formattedReviews);
             articleDTOS.add( articleDTO );
@@ -52,18 +53,10 @@ public class ArticleServiceImpl implements ArticleService{
         List<String> formattedReviews = new ArrayList<>();
 
         for( Review review: reviews){
-            formattedReviews.add( getStars( review) + ": " + review.getText() );
+            formattedReviews.add( Util.getFormattedStars( review.getStars()) + ": " + review.getText() );
         }
 
         return formattedReviews;
-    }
-
-    private String getStars(Review review) {
-        String stars = "";
-        for( int i=0; i < review.getStars(); i++){
-            stars = stars + "*";
-        }
-        return stars;
     }
 
     @Override

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -97,7 +98,7 @@ public class ArticleController {
                                     )
                             }),
                     }),
-            @ApiResponse(responseCode = "400", description = "Bad Request, artikel met zelfde artikelnummer bestaat al",
+            @ApiResponse(responseCode = "409", description = "HTTP status 409: Conflict, artikel met zelfde artikelnummer bestaat al",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = String.class),
                             examples = {
@@ -129,7 +130,7 @@ public class ArticleController {
         try {
             saved = articleService.saveDTO( articleDTO);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
 
         return ResponseEntity.ok(saved);
@@ -138,6 +139,18 @@ public class ArticleController {
     // http:/<port>/api/findbyean?ean=123456789
     @GetMapping( value = "/findbyean", produces = "application/json")
     public ResponseEntity<ArticleDTO> findByEan(@RequestParam String ean){
+        Optional<ArticleDTO> articleDTO = articleService.findDTOByEan( ean);
+
+        if(articleDTO.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }else{
+            return ResponseEntity.ok(articleDTO.get());
+        }
+    }
+
+    // http:/<port>/api/findbyean2/123456789
+    @GetMapping( value = "/findbyean2/{ean}", produces = "application/json")
+    public ResponseEntity<ArticleDTO> findByEan2(@PathVariable String ean){
         Optional<ArticleDTO> articleDTO = articleService.findDTOByEan( ean);
 
         if(articleDTO.isEmpty()){

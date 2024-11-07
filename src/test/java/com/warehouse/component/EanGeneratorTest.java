@@ -37,7 +37,6 @@ class EanGeneratorTest {
         try {
             String actual = eanGenerator.newEan("4301133");
         } catch (Exception e) {
-
             assertEquals("Artikelnummer te lang", e.getMessage());
         }
     }

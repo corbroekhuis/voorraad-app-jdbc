@@ -3,7 +3,7 @@ package com.warehouse.model;
 public class Review {
 
     Long id;
-    Long artikelId;
+    Long articleId;
     String text;
     int stars;
 
@@ -15,12 +15,12 @@ public class Review {
         this.id = id;
     }
 
-    public Long getArtikelId() {
-        return artikelId;
+    public Long getArticleId() {
+        return articleId;
     }
 
-    public void setArtikelId(Long artikelId) {
-        this.artikelId = artikelId;
+    public void setArticleId(Long articleId) {
+        this.articleId = articleId;
     }
 
     public String getText() {

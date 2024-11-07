@@ -1,16 +1,15 @@
-package com.warehouse.dao.review;
+package com.warehouse.service;
 
 import com.warehouse.model.Review;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ReviewDAO {
+public interface ReviewService {
 
     Iterable<Review> findAll();
     Optional<Review> findById(long id);
-    Number create(Review article);
-    int update(Review article);
+    Review save(Review review);
     int deleteById(long id);
     List<Review> findByArticleId(long id);
 }
