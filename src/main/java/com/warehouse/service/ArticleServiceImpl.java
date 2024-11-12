@@ -148,6 +148,7 @@ public class ArticleServiceImpl implements ArticleService{
             articleSER.setId(article.getId());
             articleSER.setName(article.getName());
             articleSER.setDescription(article.getDescription());
+            articleSER.setEan(article.getEan());
             List<Review> reviews = reviewDAO.findByArticleId(article.getId());
             List<String> formattedReviews = formatReviews( reviews);
             articleSER.setReviews( formattedReviews);
@@ -172,9 +173,28 @@ public class ArticleServiceImpl implements ArticleService{
         articleSER.setId(article.getId());
         articleSER.setName(article.getName());
         articleSER.setDescription(article.getDescription());
+        articleSER.setEan(article.getEan());
         List<Review> reviews = reviewDAO.findByArticleId(article.getId());
         List<String> formattedReviews = formatReviews( reviews);
         articleSER.setReviews( formattedReviews);
         return Optional.of(articleSER);
+    }
+
+    @Override
+    public void updateStockById(long id, int amount) throws Exception {
+        Optional<Article> optional = articleDAO.findById( id);
+
+        if(optional.isEmpty()){
+            throw new Exception( "Artikel niet gevonden");
+        }
+
+        Article article = optional.get();
+
+        if( (article.getStock() + amount) < 0){
+            throw new Exception( "Voorraad wordt negatief");
+        }
+
+        updateStock( article, amount);
+
     }
 }

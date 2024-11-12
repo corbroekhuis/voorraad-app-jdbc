@@ -17,4 +17,5 @@ public interface ArticleService {
     void updateStock(Article article, int amount);
     Iterable<ArticleSER> findAllSERS();
     Optional<ArticleSER> findSERById( long id);
+    void updateStockById(long id, int amount) throws Exception;
 }

@@ -162,12 +162,25 @@ public class ArticleController {
         }
     }
 
-    // http:/<port>/api/article?ean=123456789&amount=10
+    // http:/<port>/api/updatestock?ean=123456789&amount=10
     @PostMapping( value = "/updatestock")
     public ResponseEntity<String> updateStock(@RequestParam String ean, @RequestParam int amount){
 
         try {
             articleService.updateStock( ean, amount);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
+        return ResponseEntity.ok("updated");
+    }
+
+    // http:/<port>/api/updatestockbyid?id=123456789&amount=10
+    @PostMapping( value = "/updatestockbyid")
+    public ResponseEntity<String> updateStockById(@RequestParam long id, @RequestParam int amount){
+
+        try {
+            articleService.updateStockById( id, amount);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
