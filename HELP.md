@@ -54,7 +54,7 @@ INSERT INTO artikelen ( naam, omschrijving, ean, artikel_nummer, voorraad, minim
 ('Kruimeldief P41', 'Krachtige oplaadbare kruimelzuiger met diverse hulpstukken', '8711999500210', '50021', 20, 10),
 ('HD Dash Cam', 'Hoge resolutie Dash Cam voor professioneel gebruik', '8711999600190', '60019', 20, 10),
 ('Tafellamp Sunny', 'Dimbare tafellamp voor sfeervol dineren', '8711999900220', '90022', 20, 10),
-('Baterijen AA', 'High-Power batterijen met lange levensduur', '8711999200270', '20027', 20, 10);
+('Batterijen AA', 'High-Power batterijen met lange levensduur', '8711999200270', '20027', 20, 10);
 
 
 ```

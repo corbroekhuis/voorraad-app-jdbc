@@ -3,6 +3,7 @@ package com.warehouse.dao.article;
 import com.warehouse.dao.article.mapper.ArticleRowMapper;
 import com.warehouse.model.Article;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -90,7 +91,12 @@ public class ArticleJDBCTemplate implements ArticleDAO {
     public Optional<Article> findByEan(String ean) {
         String sql = "SELECT * FROM artikelen WHERE ean=?";
 
-        Article article = jdbcTemplate.queryForObject( sql, new ArticleRowMapper(), ean);
+        Article article = null;
+        try {
+            article = jdbcTemplate.queryForObject( sql, new ArticleRowMapper(), ean);
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
         return Optional.ofNullable( article);
     }
 

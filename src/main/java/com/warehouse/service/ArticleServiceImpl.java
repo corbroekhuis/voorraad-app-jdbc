@@ -3,6 +3,7 @@ package com.warehouse.service;
 import com.warehouse.dao.article.ArticleDAO;
 import com.warehouse.dao.review.ReviewDAO;
 import com.warehouse.model.Review;
+import com.warehouse.model.client.ArticleSER;
 import com.warehouse.util.Util;
 import com.warehouse.model.mapper.ArticleMapper;
 import com.warehouse.model.Article;
@@ -134,5 +135,46 @@ public class ArticleServiceImpl implements ArticleService{
 
         article.setStock( article.getStock() + amount);
         articleDAO.update( article);
+    }
+
+    @Override
+    public Iterable<ArticleSER> findAllSERS() {
+
+        List<ArticleSER> articleSERS = new ArrayList<>();
+        Iterable<Article> articles = articleDAO.findAll();
+
+        for( Article article: articles){
+            ArticleSER articleSER = new ArticleSER();
+            articleSER.setId(article.getId());
+            articleSER.setName(article.getName());
+            articleSER.setDescription(article.getDescription());
+            List<Review> reviews = reviewDAO.findByArticleId(article.getId());
+            List<String> formattedReviews = formatReviews( reviews);
+            articleSER.setReviews( formattedReviews);
+            articleSERS.add( articleSER);
+        }
+
+        return articleSERS;
+    }
+
+    @Override
+    public Optional<ArticleSER> findSERById(long id) {
+
+        Optional<Article> articleOptional = articleDAO.findById( id);
+
+        if(articleOptional.isEmpty()){
+            return Optional.empty();
+        }
+
+        Article article = articleOptional.get();
+
+        ArticleSER articleSER = new ArticleSER();
+        articleSER.setId(article.getId());
+        articleSER.setName(article.getName());
+        articleSER.setDescription(article.getDescription());
+        List<Review> reviews = reviewDAO.findByArticleId(article.getId());
+        List<String> formattedReviews = formatReviews( reviews);
+        articleSER.setReviews( formattedReviews);
+        return Optional.of(articleSER);
     }
 }

@@ -1,6 +1,7 @@
 package com.warehouse.controller;
 
 import com.warehouse.model.Article;
+import com.warehouse.model.client.ArticleSER;
 import com.warehouse.model.dto.ArticleDTO;
 import com.warehouse.service.ArticleService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -179,5 +181,27 @@ public class ArticleController {
 
         articleService.deleteByEan( ean);
         return ResponseEntity.ok("deleted");
+    }
+
+    // http:/<port>/api/article
+    @GetMapping( value = "/articleser", produces = "application/json")
+    public ResponseEntity<Iterable<ArticleSER>> findAllSER(){
+
+        Iterable<ArticleSER> articleSERS = articleService.findAllSERS();
+
+        return ResponseEntity.ok(articleSERS);
+    }
+
+    // http:/<port>/api/article
+    @GetMapping( value = "/articleser/{id}", produces = "application/json")
+    public ResponseEntity<ArticleSER> findSERById( @PathVariable("id") Long id){
+
+        Optional<ArticleSER> articleSER = articleService.findSERById( id);
+
+        if(articleSER.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }else{
+            return ResponseEntity.ok(articleSER.get());
+        }
     }
 }
