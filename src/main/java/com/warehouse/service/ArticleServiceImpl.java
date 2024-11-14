@@ -107,14 +107,14 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public void deleteByEan(String ean){
+    public void deleteById(long id){
 
-        int deleted = articleDAO.deleteByEan( ean);
+        int deleted = articleDAO.deleteById( id);
         System.out.println("Deleted " + deleted + " rows");
     }
 
     @Override
-    public void updateStock(String ean, int amount) throws Exception {
+    public void updateStock(String ean, int quantity) throws Exception {
         Optional<Article> optional = articleDAO.findByEan( ean);
 
         if(optional.isEmpty()){
@@ -123,17 +123,17 @@ public class ArticleServiceImpl implements ArticleService{
 
         Article article = optional.get();
 
-        if( (article.getStock() + amount) < 0){
+        if( (article.getStock() + quantity) < 0){
             throw new Exception( "Voorraad wordt negatief");
         }
 
-        updateStock( article, amount);
+        updateStock( article, quantity);
     }
 
     @Override
-    public void updateStock(Article article, int amount) {
+    public void updateStock(Article article, int quantity) {
 
-        article.setStock( article.getStock() + amount);
+        article.setStock( article.getStock() + quantity);
         articleDAO.update( article);
     }
 
@@ -181,7 +181,7 @@ public class ArticleServiceImpl implements ArticleService{
     }
 
     @Override
-    public void updateStockById(long id, int amount) throws Exception {
+    public void updateStockById(long id, int quantity) throws Exception {
         Optional<Article> optional = articleDAO.findById( id);
 
         if(optional.isEmpty()){
@@ -190,11 +190,11 @@ public class ArticleServiceImpl implements ArticleService{
 
         Article article = optional.get();
 
-        if( (article.getStock() + amount) < 0){
+        if( (article.getStock() + quantity) < 0){
             throw new Exception( "Voorraad wordt negatief");
         }
 
-        updateStock( article, amount);
+        updateStock( article, quantity);
 
     }
 }

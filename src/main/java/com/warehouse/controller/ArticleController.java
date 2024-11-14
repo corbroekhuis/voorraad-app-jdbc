@@ -162,37 +162,37 @@ public class ArticleController {
         }
     }
 
-    // http:/<port>/api/updatestock?ean=123456789&amount=10
-    @PostMapping( value = "/updatestock")
-    public ResponseEntity<String> updateStock(@RequestParam String ean, @RequestParam int amount){
+    // http:/<port>/api/updatestock?ean=123456789&quantity=10
+    @PostMapping( value = "/updatestockbyean")
+    public ResponseEntity<String> updateStockByEan(@RequestParam String ean, @RequestParam int quantity){
 
         try {
-            articleService.updateStock( ean, amount);
+            articleService.updateStock( ean, quantity);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 
         return ResponseEntity.ok("updated");
     }
 
-    // http:/<port>/api/updatestockbyid?id=123456789&amount=10
+    // http:/<port>/api/updatestockbyid?id=123456789&quantity=10
     @PostMapping( value = "/updatestockbyid")
-    public ResponseEntity<String> updateStockById(@RequestParam long id, @RequestParam int amount){
+    public ResponseEntity<String> updateStockById(@RequestParam long id, @RequestParam int quantity){
 
         try {
-            articleService.updateStockById( id, amount);
+            articleService.updateStockById( id, quantity);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 
         return ResponseEntity.ok("updated");
     }
 
-    // http:/<port>/api/article?ean=123456789
+    // http:/<port>/api/article/123456789
     @DeleteMapping( value="/article")
-    public ResponseEntity<String> deleteByEan( @RequestParam String ean){
+    public ResponseEntity<String> deleteByEan( @RequestParam long id){
 
-        articleService.deleteByEan( ean);
+        articleService.deleteById( id);
         return ResponseEntity.ok("deleted");
     }
 
@@ -201,7 +201,6 @@ public class ArticleController {
     public ResponseEntity<Iterable<ArticleSER>> findAllSER(){
 
         Iterable<ArticleSER> articleSERS = articleService.findAllSERS();
-
         return ResponseEntity.ok(articleSERS);
     }
 

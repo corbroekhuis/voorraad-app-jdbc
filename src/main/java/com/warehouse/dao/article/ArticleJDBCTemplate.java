@@ -36,8 +36,12 @@ public class ArticleJDBCTemplate implements ArticleDAO {
 
         String sql = "SELECT * FROM artikelen WHERE id=?";
 
-        Article article = jdbcTemplate.queryForObject( sql, new ArticleRowMapper(), id);
-        return Optional.ofNullable( article);
+        try {
+            Article article = jdbcTemplate.queryForObject( sql, new ArticleRowMapper(), id);
+            return Optional.ofNullable( article);
+        } catch (DataAccessException e) {
+            return Optional.empty();
+        }
     }
 
 
@@ -89,21 +93,21 @@ public class ArticleJDBCTemplate implements ArticleDAO {
 
     @Override
     public Optional<Article> findByEan(String ean) {
+
         String sql = "SELECT * FROM artikelen WHERE ean=?";
 
-        Article article = null;
         try {
-            article = jdbcTemplate.queryForObject( sql, new ArticleRowMapper(), ean);
+            Article article = jdbcTemplate.queryForObject( sql, new ArticleRowMapper(), ean);
+            return Optional.ofNullable( article);
         } catch (DataAccessException e) {
             return Optional.empty();
         }
-        return Optional.ofNullable( article);
     }
 
     @Override
-    public int deleteByEan(String ean) {
-        String deleteQuery = "DELETE FROM artikelen WHERE ean = ?";
-        return jdbcTemplate.update(deleteQuery, ean);
+    public int deleteById(long id) {
+        String deleteQuery = "DELETE FROM artikelen WHERE id = ?";
+        return jdbcTemplate.update(deleteQuery, id);
     }
 
     @Override

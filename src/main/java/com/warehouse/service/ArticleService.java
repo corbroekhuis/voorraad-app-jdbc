@@ -12,10 +12,10 @@ public interface ArticleService {
     ArticleDTO saveDTO(ArticleDTO articleDTO) throws Exception;
     Optional<ArticleDTO> findDTOByEan(String ean);
     Iterable<Article> findAll();
-    void deleteByEan(String ean);
+    void deleteById(long id);
     void updateStock(String ean, int amount) throws Exception;
     void updateStock(Article article, int amount);
     Iterable<ArticleSER> findAllSERS();
     Optional<ArticleSER> findSERById( long id);
-    void updateStockById(long id, int amount) throws Exception;
+    void updateStockById(long id, int quantity) throws Exception;
 }
