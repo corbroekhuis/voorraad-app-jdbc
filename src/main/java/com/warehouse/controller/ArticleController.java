@@ -169,6 +169,7 @@ public class ArticleController {
         try {
             articleService.updateStock( ean, quantity);
         } catch (Exception e) {
+            System.out.println( e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
 
@@ -182,7 +183,8 @@ public class ArticleController {
         try {
             articleService.updateStockById( id, quantity);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            System.out.println( e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
 
         return ResponseEntity.ok("updated");

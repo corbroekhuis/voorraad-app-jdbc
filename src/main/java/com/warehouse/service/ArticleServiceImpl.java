@@ -148,7 +148,6 @@ public class ArticleServiceImpl implements ArticleService{
             articleSER.setId(article.getId());
             articleSER.setName(article.getName());
             articleSER.setDescription(article.getDescription());
-            articleSER.setEan(article.getEan());
             List<Review> reviews = reviewDAO.findByArticleId(article.getId());
             List<String> formattedReviews = formatReviews( reviews);
             articleSER.setReviews( formattedReviews);
@@ -173,7 +172,7 @@ public class ArticleServiceImpl implements ArticleService{
         articleSER.setId(article.getId());
         articleSER.setName(article.getName());
         articleSER.setDescription(article.getDescription());
-        articleSER.setEan(article.getEan());
+
         List<Review> reviews = reviewDAO.findByArticleId(article.getId());
         List<String> formattedReviews = formatReviews( reviews);
         articleSER.setReviews( formattedReviews);

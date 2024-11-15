@@ -7,7 +7,6 @@ public class ArticleSER {
     Long id;
     String name;
     String description;
-    String ean;
     List<String> reviews;
 
     public Long getId() {
@@ -32,14 +31,6 @@ public class ArticleSER {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getEan() {
-        return ean;
-    }
-
-    public void setEan(String ean) {
-        this.ean = ean;
     }
 
     public List<String> getReviews() {
