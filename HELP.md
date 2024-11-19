@@ -29,6 +29,9 @@
 * [Create tabel Reviews](#reviews)
 * [Swagger annotations](#swagger)
 * [Properties](#properties)
+* [Basic Authentication](#basic-authentication)
+* [Encoding](#encode)
+* [Header Filter](#filter)
 
 <br/><br/>
 <br/><br/>
@@ -240,3 +243,132 @@ Eventueel toevoegen aan class ```Article```
     }
 ```
 
+<br><br>
+<br><br>
+* [Top](#top)
+
+## <a id="basic-authentication"></a>Basic Authentication
+
+```java
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+
+//@Configuration
+//@EnableWebMvc
+public class BasicAuthConfig {
+
+//    @Bean
+    public UserDetailsService userDetailsService() {
+        UserDetails user1 =
+                User.builder()
+                        .username("user")
+                        .password(passwordEncoder().encode("user"))
+                        .roles("USER")
+                        .build();
+        UserDetails user2 =
+                User.builder()
+                        .username("admin")
+                        .password(passwordEncoder().encode("admin"))
+                        .roles("USER", "ADMIN")
+                        .build();
+        return new InMemoryUserDetailsManager(user1, user2);
+    }
+
+//@Bean
+BCryptPasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+}
+
+//@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+    http.headers(header -> header.frameOptions(options -> options.sameOrigin()));
+    http.csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/"
+                    , "/h2-console/**"
+                    , "/v2/api-docs"
+                    , "/configuration/ui"
+                    , "/swagger-resources/**"
+                    , "/configuration/security"
+                    , "/swagger-ui/**"
+                    , "/webjars/**"
+            ).permitAll()
+            .requestMatchers("/api").authenticated()
+            .anyRequest().authenticated()
+            )
+        .httpBasic(withDefaults());
+
+        return http.build();
+    }
+}
+```
+
+<br><br>
+<br><br>
+* [Top](#top)
+
+## <a id="encode"></a>Create token from user and password 
+
+```java
+    public static String getBasicAuth( String user, String password){
+
+        StringBuilder sb = new StringBuilder("Basic ");
+
+        String token = Base64.getUrlEncoder().encodeToString(  ( user + ":" + password).getBytes());
+        sb.append( token);
+        System.out.println( sb);
+
+        return sb.toString();
+    }
+```
+
+<br><br>
+<br><br>
+* [Top](#top)
+
+## <a id="filter"></a>Header Filter
+
+```java
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.Enumeration;
+
+@Component
+public class HeaderFilter extends OncePerRequestFilter {
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        
+        Enumeration<String> headerNames = request.getHeaderNames();
+
+        while(headerNames.hasMoreElements()){
+            String headerName = headerNames.nextElement();
+            String value = request.getHeader(headerName);
+            System.out.println( headerName + ": " + value);
+        }
+        filterChain.doFilter(request, response);
+    }
+}
+
+```
+
+<br><br>
+<br><br>
+* [Top](#top)
