@@ -88,6 +88,11 @@ public class ArticleServiceImpl implements ArticleService{
 
         if( article.isPresent()){
             ArticleDTO articleDTO = articleMapper.toArticleDTO(article.get());
+
+            List<Review> reviews = reviewDAO.findByArticleId(article.get().getId());
+            List<String> formattedReviews = formatReviews( reviews);
+            articleDTO.setReviews( formattedReviews);
+
             return Optional.of( articleDTO);
         }
 
