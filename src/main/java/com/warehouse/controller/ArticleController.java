@@ -5,6 +5,8 @@ import com.warehouse.model.client.ArticleSER;
 import com.warehouse.model.dto.ArticleDTO;
 import com.warehouse.service.ArticleService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -40,8 +42,13 @@ public class ArticleController {
     @GetMapping( value = "/article", produces = "application/json")
     public ResponseEntity<Iterable<ArticleDTO>> findAll(){
 
+
         Iterable<ArticleDTO> articleDTOS = articleService.findAllDTOS();
 
+        System.out.println("Inside findAll");
+        for (ArticleDTO articleDTO : articleDTOS) {
+            System.out.println(articleDTO.getEan());
+        }
         return ResponseEntity.ok(articleDTOS);
     }
 
@@ -56,7 +63,12 @@ public class ArticleController {
                     <li> Voeg in beide gevallen geen ean toe; dat wordt gegenereerd</li>
                     <li> Nota Bene: kies een niet bestaand artikelnummer</li>
                 </ul>
-                """)
+                """,
+            parameters = { @Parameter( in= ParameterIn.HEADER,
+                            name="Authorization",
+                            required = true,
+            schema = @Schema( type = "string"))}
+    )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Bericht toegevoegd",
                     content = {@Content(mediaType = "application/json",
@@ -210,11 +222,14 @@ public class ArticleController {
     @GetMapping( value = "/articleser/{id}", produces = "application/json")
     public ResponseEntity<ArticleSER> findSERById( @PathVariable("id") Long id){
 
+        System.out.println("Inside findSERById");
+
         Optional<ArticleSER> articleSER = articleService.findSERById( id);
 
         if(articleSER.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }else{
+            System.out.println(articleSER.get().getName());
             return ResponseEntity.ok(articleSER.get());
         }
     }

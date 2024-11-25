@@ -3,13 +3,13 @@ package com.warehouse.dao.article;
 import com.warehouse.dao.article.mapper.ArticleRowMapper;
 import com.warehouse.model.Article;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,14 +36,13 @@ public class ArticleJDBCTemplate implements ArticleDAO {
 
         String sql = "SELECT * FROM artikelen WHERE id=?";
 
-        try {
-            Article article = jdbcTemplate.queryForObject( sql, new ArticleRowMapper(), id);
-            return Optional.ofNullable( article);
-        } catch (DataAccessException e) {
-            return Optional.empty();
-        }
-    }
+        List<Article> articles = jdbcTemplate.query( sql, new ArticleRowMapper(), id);
 
+        if( articles.size() > 0){
+            return Optional.of( articles.get(0));
+        }
+        return Optional.ofNullable( null);
+    }
 
     @Override
     public Number create(Article article) {
@@ -96,12 +95,12 @@ public class ArticleJDBCTemplate implements ArticleDAO {
 
         String sql = "SELECT * FROM artikelen WHERE ean=?";
 
-        try {
-            Article article = jdbcTemplate.queryForObject( sql, new ArticleRowMapper(), ean);
-            return Optional.ofNullable( article);
-        } catch (DataAccessException e) {
-            return Optional.empty();
+        List<Article> articles = jdbcTemplate.query( sql, new ArticleRowMapper(), ean);
+
+        if( articles.size() > 0){
+            return Optional.of( articles.get(0));
         }
+        return Optional.ofNullable( null);
     }
 
     @Override
@@ -114,7 +113,11 @@ public class ArticleJDBCTemplate implements ArticleDAO {
     public Optional<Article> findByArticleNumber(String articleNumber) {
         String sql = "SELECT * FROM artikelen WHERE artikel_nummer=?";
 
-        Article article = jdbcTemplate.queryForObject( sql, new ArticleRowMapper(), articleNumber);
-        return Optional.ofNullable( article);
+        List<Article> articles = jdbcTemplate.query( sql, new ArticleRowMapper(), articleNumber);
+
+        if( articles.size() > 0){
+            return Optional.of( articles.get(0));
+        }
+        return Optional.ofNullable( null);
     }
 }

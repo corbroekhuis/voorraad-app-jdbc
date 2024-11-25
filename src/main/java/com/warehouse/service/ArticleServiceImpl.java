@@ -65,21 +65,28 @@ public class ArticleServiceImpl implements ArticleService{
 
         Optional<Article> found = articleDAO.findByArticleNumber( articleDTO.getArticleNumber());
 
-        if(found.isPresent()){
+        if(articleDTO.getId() == null && found.isPresent()){
             throw new Exception("Artikel met artikelnummer: " + articleDTO.getArticleNumber() + " bestaat al");
         }
 
         Article article = articleMapper.toArticle( articleDTO);
 
         if(articleDTO.getId() == null){
-            // id is in article
             article = create( article);
         }else{
+            // id is in article
             int updated = articleDAO.update( article);
             System.out.println( "Updated: " + updated + " rows");
         }
 
         return articleMapper.toArticleDTO( article);
+    }
+
+    private Article create(Article article) {
+        Number id = articleDAO.create( article);
+        System.out.println( "Created Article with id: " + id.toString());
+        article.setId( id.longValue());
+        return article;
     }
 
     @Override
@@ -102,13 +109,6 @@ public class ArticleServiceImpl implements ArticleService{
     @Override
     public Iterable<Article> findAll() {
         return articleDAO.findAll();
-    }
-
-    private Article create(Article article) {
-        Number id = articleDAO.create( article);
-        System.out.println( "Created Article with id: " + id.toString());
-        article.setId( id.longValue());
-        return article;
     }
 
     @Override
