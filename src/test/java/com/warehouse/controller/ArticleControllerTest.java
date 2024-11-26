@@ -40,12 +40,7 @@ public class ArticleControllerTest {
     ArticleController articleController;
 
     @Autowired
-    SecurityFilterChain filterChain;
-
-    @Autowired
     ArticleMapper articleMapper;
-
-    ArticleService articleService;
 
     @MockBean
     ArticleDAO articleDAO;
@@ -89,7 +84,6 @@ public class ArticleControllerTest {
         when(articleDAO.findByEan(article.getEan()))
                 .thenReturn(Optional.of(article));
 
-
         when(reviewDAO.findByArticleId(article.getId()))
                 .thenReturn(reviews);
 
@@ -118,6 +112,7 @@ public class ArticleControllerTest {
                     .content( content)
                 )
                 .andDo(print())
+                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.name").value("Vuurwerkpakket I"))
                 .andExpect(status().isOk());
     }

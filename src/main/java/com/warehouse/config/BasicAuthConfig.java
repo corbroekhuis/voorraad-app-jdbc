@@ -1,5 +1,6 @@
 package com.warehouse.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,7 @@ public class BasicAuthConfig {
     String adminUsername;
     String adminPassword;
 
+    @Autowired
     public BasicAuthConfig(
                     @Value("${user.username}") String userUsername,
                     @Value("${user.password}") String userPassword,

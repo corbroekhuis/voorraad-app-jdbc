@@ -11,6 +11,8 @@ public class Application implements CommandLineRunner {
 	private static ApplicationContext applicationContext;
 
 	public static void main(String[] args){
+		//System.setProperty("javax.net.debug", "ssl:handshake");
+
 		ApplicationContext applicationContext = SpringApplication.run(Application.class, args);
 
 		for( String beanDefinitionName: applicationContext.getBeanDefinitionNames()){
