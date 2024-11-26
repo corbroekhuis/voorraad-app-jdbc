@@ -89,8 +89,6 @@ INSERT INTO reviews (artikel_id, tekst, sterren) VALUES
 
 ```
 
-<br/><br/>
-<br/><br/>
 * [Top](#top)
 ## <a id="swagger"></a>Swagger annotations
 
@@ -181,141 +179,115 @@ Plaats de code boven
     })
 ```
 
-<br/><br/>
-<br/><br/>
-
 * [Top](#top)
 ## <a id="properties"></a>Properties
 
 
 ```properties
-# Default: 8080
 server.port=8081
 
 ean.aansluitnummer=11999
-fixed-delay.in.milliseconds=40000
+
+user.username=user
+user.password=user
+admin.username=admin
+admin.password=admin
+
 spring.application.name=voorraad-app
+fixed-delay.in.milliseconds=60000
 
 spring.h2.console.enabled=true
 spring.datasource.driverClassName=org.h2.Driver
 spring.datasource.url=jdbc:h2:file:C:/Temp/voorraad
 spring.datasource.username=sa
 spring.datasource.password=sa
-# jpa, niet meer nodig
-# spring.jpa.hibernate.ddl-auto=create
+
+# mTls
+server.ssl.key-store=classpath:voorraad.p12
+server.ssl.key-store-password=voorraad
+server.ssl.key-store-type=PKCS12
+server.ssl.client-auth=NEED
+server.ssl.trust-store=classpath:truststore.p12
+server.ssl.trust-store-password=cacerts
+server.ssl.trust-store-type=PKCS12
 
 ```
 
-<br/><br/>
-<br/><br/>
 * [Top](#top)
-
-Eventueel toevoegen aan class ```Article```
-```Java
-    public Map<String, Object> getParameterMap(){
-
-        Map<String,Object> parameters = new HashMap<String,Object>();
-        parameters.put("naam", name);
-        parameters.put("omschrijving", description);
-        parameters.put("ean", ean);
-        parameters.put("artikel_nummer", articleNumber);
-        parameters.put("voorraad", stock);
-        parameters.put("minimum_voorraad", minimumStock);
-        
-        return parameters;
-    }
-```
-
-```Java
-    public Object[] getValueArray(){
-
-        Object[] valueArray = {
-                name,
-                description,
-                articleNumber,
-                ean,
-                stock,
-                minimumStock,
-                id
-		};
-        
-        return valueArray;
-    }
-```
-
-<br><br>
-<br><br>
-* [Top](#top)
-
 ## <a id="basic-authentication"></a>Basic Authentication
 
 ```java
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-
-import static org.springframework.security.config.Customizer.withDefaults;
-
-//@Configuration
-//@EnableWebMvc
+@Configuration
+@EnableWebSecurity
 public class BasicAuthConfig {
 
-//    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user1 =
-                User.builder()
-                        .username("user")
-                        .password(passwordEncoder().encode("user"))
-                        .roles("USER")
-                        .build();
-        UserDetails user2 =
-                User.builder()
-                        .username("admin")
-                        .password(passwordEncoder().encode("admin"))
-                        .roles("USER", "ADMIN")
-                        .build();
-        return new InMemoryUserDetailsManager(user1, user2);
-    }
+  String userUsername;
+  String userPassword;
+  String adminUsername;
+  String adminPassword;
 
-//@Bean
-BCryptPasswordEncoder passwordEncoder() {
+  public BasicAuthConfig(
+          @Value("${user.username}") String userUsername,
+          @Value("${user.password}") String userPassword,
+          @Value("${admin.username}") String adminUsername,
+          @Value("${admin.password}") String adminPassword
+  ) {
+    this.userUsername = userUsername;
+    this.userPassword = userPassword;
+    this.adminUsername = adminUsername;
+    this.adminPassword = adminPassword;
+  }
+
+  @Bean
+  public UserDetailsService userDetailsService() {
+    UserDetails user1 =
+            User.builder()
+                    .username(userUsername)
+                    .password(passwordEncoder().encode(userPassword))
+                    .roles("USER")
+                    .build();
+    UserDetails user2 =
+            User.builder()
+                    .username(adminUsername)
+                    .password(passwordEncoder().encode(adminPassword))
+                    .roles("USER", "ADMIN")
+                    .build();
+    return new InMemoryUserDetailsManager(user1, user2);
+  }
+
+  @Bean
+  BCryptPasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
-}
+  }
 
-//@Bean
-public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
     http.headers(header -> header.frameOptions(options -> options.sameOrigin()));
     http.csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/"
-                    , "/h2-console/**"
-                    , "/v2/api-docs"
-                    , "/configuration/ui"
-                    , "/swagger-resources/**"
-                    , "/configuration/security"
-                    , "/swagger-ui/**"
-                    , "/webjars/**"
-            ).permitAll()
-            .requestMatchers("/api").authenticated()
-            .anyRequest().authenticated()
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/"
+                            , "/h2-console/**"
+                            , "/v3/api-docs"
+                            , "/configuration/ui"
+                            , "/swagger-resources/**"
+                            , "/configuration/security"
+                            , "/swagger-ui/**"
+                            , "/swagger-ui.html"
+                            , "/webjars/**"
+                    ).permitAll()
+                    .requestMatchers("/api").authenticated()
+                    .anyRequest().authenticated()
             )
-        .httpBasic(withDefaults());
+            .sessionManagement(sessionManager -> sessionManager
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .httpBasic(withDefaults());
 
-        return http.build();
-    }
+    return http.build();
+  }
 }
 ```
 
-<br><br>
-<br><br>
 * [Top](#top)
 
 ## <a id="encode"></a>Create token from user and password 
@@ -333,23 +305,11 @@ public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     }
 ```
 
-<br><br>
-<br><br>
 * [Top](#top)
 
 ## <a id="filter"></a>Header Filter
 
 ```java
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.io.IOException;
-import java.util.Enumeration;
-
 @Component
 public class HeaderFilter extends OncePerRequestFilter {
 
@@ -369,6 +329,4 @@ public class HeaderFilter extends OncePerRequestFilter {
 
 ```
 
-<br><br>
-<br><br>
 * [Top](#top)
